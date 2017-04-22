@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="TestNGtest" default="test" basedir=".">
+	<property name="libs.dir" value="libs"/>
+	<property name="test-output.dir" value="test-output"/>
+	<path id="run.classpath">
+		<!--adding the saxon jar to your classpath-->
+		<fileset dir="${libs.dir}" includes="*.jar" />
+	</path>
+	<path id="classes">
+		<path refid="run.classpath"/>
+		<pathelement location="${basedir}/bin"/>
+	</path>
+	
+	<taskdef resource="testngtasks" classpathref="run.classpath"/>
+	
+	<target name="clean">
+		<delete dir="bin"/>
+		<delete dir="${test-output.dir}/TestReport"/>
+	</target>
+	
+	<target name="compile" depends="clean">
+		<mkdir dir="bin"/>
+		<javac srcdir="src" destdir="bin" debug="on" classpathref="run.classpath" includeAntRuntime="false" encoding="GBK"/>
+	</target>
+	
+	<target name="test" depends="compile">
+		<testng outputdir="${test-output.dir}" classpathref="classes">
+			<xmlfileset dir="${basedir}" includes="testng.xml"/>
+		</testng>
+	</target>
+
+	
+</project>
